@@ -11,15 +11,27 @@ import './styles/app.css';
 // start the Stimulus application
 import './bootstrap';
 
-import {Modal} from "bootstrap";
+const findCacheControlMeta = () => {
+    return document.querySelector('meta[name="turbo-cache-control"]');
+};
 
-document.addEventListener('turbo:before-cache', function () {
-    if (document.body.classList.contains('modal-open')) {
-        const modalEl = document.querySelector('.modal');
-        const modal = Modal.getInstance(modalEl);
-        modalEl.classList.remove('fade');
-        modal._backdrop._config.isAnimated = false;
-        modal.hide();
-        modal.dispose();
+document.addEventListener('show.bs.modal', function () {
+    if (findCacheControlMeta()) {
+        return;
     }
+
+    const meta = document.createElement('meta');
+    meta.name = 'turbo-cache-control';
+    meta.content = 'no-cache';
+    meta.dataset.removable = true;
+    document.head.appendChild(meta);
+});
+
+document.addEventListener('hidden.bs.modal', function () {
+    const meta = findCacheControlMeta();
+    if (!meta || !meta.dataset.removable) {
+        return;
+    }
+
+    meta.remove();
 });
