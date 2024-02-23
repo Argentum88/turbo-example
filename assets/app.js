@@ -11,6 +11,14 @@ import './styles/app.css';
 // start the Stimulus application
 import './bootstrap';
 
+import Swal from 'sweetalert2';
+document.addEventListener('turbo:before-cache', () => {
+    if (Swal.isVisible()) {
+        Swal.getPopup().style.animationDuration = '0ms';
+        Swal.close();
+    }
+});
+
 const findCacheControlMeta = () => {
     return document.querySelector('meta[name="turbo-cache-control"]');
 };
