@@ -14,8 +14,8 @@ const TurboHelper = class {
             this.removeCacheControlMeta();
         });
 
-        document.addEventListener('turbo:before-render', () => {
-            document.querySelector('#weatherwidget-io-js').remove();
+        document.addEventListener('turbo:render', () => {
+            this.initializeWeatherWidget();
         });
     }
 
@@ -50,6 +50,10 @@ const TurboHelper = class {
     findCacheControlMeta() {
         return document.querySelector('meta[name="turbo-cache-control"]');
     };
+
+    initializeWeatherWidget() {
+        __weatherwidget_init();
+    }
 }
 
 export default new TurboHelper();
