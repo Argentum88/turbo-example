@@ -13,6 +13,10 @@ const TurboHelper = class {
         document.addEventListener('hidden.bs.modal', () => {
             this.removeCacheControlMeta();
         });
+
+        document.addEventListener('turbo:before-render', () => {
+            document.querySelector('#weatherwidget-io-js').remove();
+        });
     }
 
     hideSweetAlert() {
