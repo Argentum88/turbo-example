@@ -17,6 +17,20 @@ const TurboHelper = class {
         document.addEventListener('turbo:render', () => {
             this.initializeWeatherWidget();
         });
+
+        document.addEventListener('turbo:visit', () => {
+            document.body.classList.add('turbo-loading');
+        });
+
+        document.addEventListener('turbo:before-render', (event) => {
+            event.detail.newBody.classList.add('turbo-loading');
+        });
+
+        document.addEventListener('turbo:render', () => {
+            requestAnimationFrame(() => {
+                document.body.classList.remove('turbo-loading');
+            });
+        });
     }
 
     hideSweetAlert() {
